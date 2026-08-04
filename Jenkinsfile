@@ -3,21 +3,33 @@ pipeline {
 
     stages {
 
-        stage('Display Files') {
+        stage('Display Workspace') {
+            steps {
+                bat 'echo Workspace: %WORKSPACE%'
+            }
+        }
+
+        stage('List Files') {
             steps {
                 bat 'dir'
             }
         }
 
-        stage('Run Batch File') {
+        stage('Read File') {
+            steps {
+                bat 'type hello.txt'
+            }
+        }
+
+        stage('Run Script') {
             steps {
                 bat 'hello.bat'
             }
         }
 
-        stage('Read Text File') {
+        stage('Finish') {
             steps {
-                bat 'type hello.txt'
+                bat 'echo Pipeline Completed Successfully!'
             }
         }
 
