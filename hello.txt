@@ -1,3 +1,5 @@
 Hello from GitHub.
 
-This file is downloaded by Jenkins.
+This file was modified today.
+
+Jenkins downloaded the latest version successfully.
