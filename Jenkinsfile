@@ -1,34 +1,25 @@
 pipeline {
-
     agent any
 
-    environment {
-        APP_NAME = 'Jenkins Learning'
-        VERSION = '1.0'
-        OWNER = 'Pranay'
+    parameters {
+        string(name: 'APP_NAME', defaultValue: 'Jenkins Demo', description: 'Enter Application Name')
+
+        choice(name: 'ENVIRONMENT', choices: ['Development', 'Testing', 'Production'], description: 'Select Environment')
+
+        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run Tests?')
     }
 
     stages {
 
-        stage('Application Details') {
+        stage('Display Parameters') {
             steps {
-                bat '''
+                bat """
                 echo ==========================
-                echo App Name : %APP_NAME%
-                echo Version : %VERSION%
-                echo Owner : %OWNER%
+                echo Application : %APP_NAME%
+                echo Environment : %ENVIRONMENT%
+                echo Run Tests   : %RUN_TESTS%
                 echo ==========================
-                '''
-            }
-        }
-
-        stage('Jenkins Details') {
-            steps {
-                bat '''
-                echo Job : %JOB_NAME%
-                echo Build : %BUILD_NUMBER%
-                echo Workspace : %WORKSPACE%
-                '''
+                """
             }
         }
 
@@ -37,6 +28,5 @@ pipeline {
                 bat 'hello.bat'
             }
         }
-
     }
 }
