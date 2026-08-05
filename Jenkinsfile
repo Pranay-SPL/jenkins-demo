@@ -2,30 +2,42 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'APP_NAME', defaultValue: 'Jenkins Demo', description: 'Enter Application Name')
+        string(name: 'APP_NAME', defaultValue: 'Jenkins Demo', description: 'Application Name')
 
-        choice(name: 'ENVIRONMENT', choices: ['Development', 'Testing', 'Production'], description: 'Select Environment')
+        choice(name: 'ENVIRONMENT',
+               choices: ['Development', 'Testing', 'Production'],
+               description: 'Select Environment')
 
-        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run Tests?')
+        booleanParam(name: 'RUN_TESTS',
+                     defaultValue: true,
+                     description: 'Run Tests?')
     }
 
     stages {
 
-        stage('Display Parameters') {
+        stage('Build') {
             steps {
-                bat """
-                echo ==========================
-                echo Application : %APP_NAME%
-                echo Environment : %ENVIRONMENT%
-                echo Run Tests   : %RUN_TESTS%
-                echo ==========================
-                """
+                echo "Building ${params.APP_NAME}"
             }
         }
 
-        stage('Run Batch File') {
+        stage('Run Tests') {
+
+            when {
+                expression {
+                    return params.RUN_TESTS
+                }
+            }
+
             steps {
-                bat 'hello.bat'
+                echo "Running Tests..."
+                bat 'echo All Tests Passed'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying to ${params.ENVIRONMENT}"
             }
         }
     }
